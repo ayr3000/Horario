@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Uwu Airways">
+<title>Uwu Airways</title>
+<style>
+:root{--bg:#fff7fb;--tx:#2c2c2a;--mu:#888780;--card:#ffffff;--bd:#ead7e0;--pk:#FBEAF0;--pkt:#993556;--vi:#EEEDFE;--vit:#3C3489}
+@media (prefers-color-scheme:dark){:root{--bg:#1c1820;--tx:#f1efe8;--mu:#B4B2A9;--card:#2a2530;--bd:#3a3340;--pk:#4B1528;--pkt:#F4C0D1;--vi:#26215C;--vit:#CECBF6}}
+*{box-sizing:border-box}
+body{margin:0;padding:16px 14px 40px;background:var(--bg);color:var(--tx);font-family:-apple-system,system-ui,sans-serif;max-width:480px;margin:0 auto}
+.tabs{display:flex;gap:6px;margin:0 0 12px}
+.tabs button{flex:1;min-height:44px;padding:0;font-size:14px;border-radius:999px;border:1px solid var(--bd);background:var(--card);color:var(--tx)}
+.tabs button.on{background:var(--pk);color:var(--pkt);border-color:transparent;font-weight:600}
+.hero{background:var(--vi);color:var(--vit);border-radius:14px;padding:12px 14px;margin:0 0 12px}
+.hero .al{font-size:12px;margin:0 0 4px}
+.hero .ttl{font-size:17px;font-weight:600}
+.hero .kao{font-size:13px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 12px}
+.st{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 12px}
+.st .l{font-size:12px;color:var(--mu)}
+.st .v{font-size:20px;font-weight:600;min-height:30px;display:flex;align-items:center}
+.bar{height:8px;background:var(--card);border:1px solid var(--bd);border-radius:999px;overflow:hidden;margin:0 0 6px}
+.bar div{height:100%;width:0;background:var(--pkt);transition:width .3s}
+.msg{font-size:13px;color:var(--pkt);min-height:22px;margin:0 0 8px}
+.row{display:grid;grid-template-columns:82px minmax(0,1fr) 32px;align-items:center;gap:8px;padding:10px 8px;border-bottom:1px solid var(--bd);min-height:48px;cursor:pointer}
+.row .t{font-size:12px;color:var(--mu);font-family:ui-monospace,Menlo,monospace}
+.row .a{font-size:14px;line-height:1.4}
+.row .k{font-size:11px;color:var(--pkt);display:block}
+.row.star{background:var(--pk);border-radius:10px;border-bottom:none}
+.row.star .a,.row.star .t{color:var(--pkt)}
+.row.now{outline:2px solid var(--pkt);border-radius:10px}
+.row.done .a{text-decoration:line-through;color:var(--mu)}
+.ck{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:15px}
+.row.done .ck{border-color:var(--pkt);background:var(--card)}
+.reset{display:block;width:100%;margin:20px 0 0;min-height:44px;border-radius:999px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:14px}
+</style>
+</head>
+<body>
+<div class="tabs" id="tabs"></div>
+<div class="hero"><div class="al">✈️ Uwu Airways · club de millas</div><div class="ttl" id="ttl"></div><div class="kao" id="kao"></div></div>
+<div class="stats">
+<div class="st"><div class="l">Millas acumuladas</div><div class="v" id="mil">0</div></div>
+<div class="st"><div class="l">Categoría de viajero</div><div class="v" id="rank" style="font-size:14px"></div></div>
+</div>
+<div class="bar"><div id="bar"></div></div>
+<div class="msg" id="msg"></div>
+<div id="list"></div>
+<button class="reset" id="reset">Empezar nueva semana (conserva tus millas)</button>
+<script>
+(function(){
+var M=['7:00','8:30','Check-in matutino: baño, peso, registro, agua y desayuno'],S=['8:30','8:40','Estirar el cuerpo antes del despegue'],Y=['8:40','9:00','Ver un video de YouTube'],D=['16:30','17:00','Ducha de recarga de energía'],L=['21:00','22:00','Modo avión: leer solo en Kindle'];
+function base(ex,w){var r=[];if(ex)r.push(['6:00','7:00','Entrenamiento del héroe (no negociable)']);return r.concat([M,S,Y,['9:00','10:30','Avanzar el libro, tu obra maestra'],['10:30','11:00','Armar el almuerzo con lo del batch'],['11:00','11:30','Ducharme'],['11:30','12:00','Entrega especial: comida para el esposo'],['12:00','12:30','Volver a la base'],['12:30','13:00','Almorzar'],['13:00','14:00','Hora libre en la sala VIP'],['14:00','16:30',w,1],D,['17:00','18:00','Ordenar la casa y armar la cena'],['18:00','18:30','Escala: colchón o descanso extra'],['18:30','21:00','Tiempo libre, sin celular'],L]);}
+var days=[
+{k:'L',n:1,t:'Vuelo UW101: destino guion',o:'(๑•̀ㅂ•́)و✧ despega el arco semanal',b:base(1,'Escribir el guion del nuevo video de YouTube')},
+{k:'M',n:2,t:'Vuelo UW202: grabación y cocina',o:'ᕙ(⇀‸↼)ᕗ hoy hay doble vuelo principal',b:[M,S,Y,['9:00','9:30','Armar el almuerzo con una porción del congelador'],['9:30','10:00','Avanzar el libro, tu obra maestra'],['10:00','10:30','Ducharme'],['10:30','11:00','Entrega especial: comida para el esposo'],['11:00','11:30','Recoger provisiones en las donaciones'],['11:30','12:00','Volver a la base'],['12:00','12:30','Almorzar'],['12:30','16:30','Grabar el video, 2 reels y 7 TikToks (pausa a la mitad)',1],D,['17:00','19:00','Batch cooking: cena de hoy y bases de la semana',1],['19:00','21:00','Tiempo libre, sin celular'],L]},
+{k:'X',n:3,t:'Vuelo UW303: destino edición',o:'(ง •̀_•́)ง a editar con estilo',b:base(1,'Editar el video de YouTube y el reel')},
+{k:'J',n:4,t:'Vuelo UW404: destino thumbnail',o:'(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ todo queda programado',b:base(0,'Thumbnail, título, descripción, programar video y reels')},
+{k:'V',n:5,t:'Vuelo UW505: destino investigación',o:'(✿◠‿◠) último vuelo de la semana',b:base(1,'Investigar y elegir el próximo video, reels y TikTok')},
+{k:'Finde',n:0,t:'Vacaciones: sin vuelos',o:'(っ˘ω˘ς) descansa, viajero frecuente',b:[['','','Descansar sin culpa, te lo ganaste'],['','','Domingo: pasar del congelador a la nevera las porciones del lunes y martes',1]]}];
+var cheers=['(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ buen vuelo','(๑˃ᴗ˂)ﻭ qué pasajero tan ordenado','٩(◕‿◕｡)۶ subiendo de altitud','(≧◡≦) el esposo está orgulloso','ヽ(•‿•)ノ aterrizaje suave'];
+var ranks=[[0,'Pasajero nuevo'],[1000,'Viajero plata'],[3000,'Viajero oro'],[6000,'Viajero platino'],[10000,'Capitán leyenda']];
+var done={},total=0;
+try{var sv=JSON.parse(localStorage.getItem('uwuAirways')||'{}');done=sv.done||{};total=sv.total||0;}catch(e){}
+function save(){try{localStorage.setItem('uwuAirways',JSON.stringify({done:done,total:total}));}catch(e){}}
+var wd=new Date().getDay(),cur=(wd===0||wd===6)?5:wd-1;
+var tabs=document.getElementById('tabs'),list=document.getElementById('list'),msg=document.getElementById('msg');
+function mins(s){var p=s.split(':');return +p[0]*60+ +p[1];}
+days.forEach(function(d,i){var b=document.createElement('button');b.textContent=d.k;b.onclick=function(){cur=i;msg.textContent='';draw();};tabs.appendChild(b);});
+function stats(){
+var d=days[cur],n=0;d.b.forEach(function(r,i){if(done[cur+'-'+i])n++;});
+document.getElementById('mil').textContent='✈️ '+total.toLocaleString('es');
+var rk=ranks[0][1];ranks.forEach(function(r){if(total>=r[0])rk=r[1];});
+document.getElementById('rank').textContent=rk;
+document.getElementById('bar').style.width=Math.round(n/d.b.length*100)+'%';
+if(n===d.b.length)msg.textContent='✧ aterrizaje perfecto, vuelo completado ✧';
+}
+function draw(){
+var now=new Date(),d=days[cur],isToday=(cur===5)?(wd===0||wd===6):(d.n===wd),nm=now.getHours()*60+now.getMinutes();
+[].forEach.call(tabs.children,function(b,i){b.className=i===cur?'on':'';});
+document.getElementById('ttl').textContent=d.t;document.getElementById('kao').textContent=d.o;
+list.innerHTML='';
+d.b.forEach(function(r,i){
+var el=document.createElement('div'),key=cur+'-'+i,pts=r[3]?500:100,on=isToday&&r[0]&&nm>=mins(r[0])&&nm<mins(r[1]);
+el.className='row'+(r[3]?' star':'')+(on?' now':'')+(done[key]?' done':'');
+var t=document.createElement('span');t.className='t';t.textContent=r[0]?r[0]+' – '+r[1]:'bonus';
+var a=document.createElement('span');a.className='a';a.textContent=r[2];
+var k=document.createElement('span');k.className='k';k.textContent=(r[3]?'Misión principal · +500 millas':'Misión · +100 millas')+(on?' · ahora':'');a.appendChild(k);
+var c=document.createElement('span');c.className='ck';c.textContent=done[key]?'✈️':'';
+el.appendChild(t);el.appendChild(a);el.appendChild(c);
+el.onclick=function(){
+done[key]=!done[key];total+=done[key]?pts:-pts;if(total<0)total=0;
+el.classList.toggle('done');c.textContent=done[key]?'✈️':'';
+msg.textContent=done[key]?'+'+pts+' millas '+cheers[Math.floor(Math.random()*cheers.length)]:'Millas devueltas (｡•́︿•̀｡)';
+save();stats();};
+list.appendChild(el);});
+stats();
+}
+document.getElementById('reset').onclick=function(){
+if(confirm('¿Empezar una nueva semana? Se borran los checks, pero tus millas se quedan.')){done={};save();msg.textContent='';draw();}
+};
+draw();
+})();
+</script>
+</body>
+</html>
